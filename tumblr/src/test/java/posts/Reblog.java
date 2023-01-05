@@ -23,7 +23,6 @@ class Reblog {
 	public static WebDriver webDriver;
 	public static String baseUrl;
 	public static WebDriverWait wait;
-	public static JavascriptExecutor js;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -35,7 +34,6 @@ class Reblog {
 		webDriver = new ChromeDriver(options);
 		baseUrl = "https://www.tumblr.com/reblog/one-time-i-dreamt/705063213940801536/2EbpUxdF";
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-		js = (JavascriptExecutor) webDriver;
 	}
 
 	@AfterAll

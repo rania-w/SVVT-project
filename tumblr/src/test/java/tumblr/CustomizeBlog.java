@@ -25,7 +25,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 class CustomizeBlog {
 	public static WebDriver webDriver;
 	public static String baseUrl;
-	public static JavascriptExecutor js;
 	public static WebDriverWait wait;
 
 	@BeforeAll
@@ -38,7 +37,6 @@ class CustomizeBlog {
 		webDriver = new ChromeDriver(options);
 		webDriver.manage().getCookies();
 		baseUrl = "https://tumblr.com";
-		js = (JavascriptExecutor) webDriver;
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 	}
 

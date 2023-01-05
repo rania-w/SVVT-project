@@ -3,6 +3,9 @@ package tumblr;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,22 +51,42 @@ class Follow {
 	}
 
 	@ParameterizedTest
-	@CsvSource({"neil,neil-gaiman", "sizzlingsandwich,sizzlingsandwichperfection-blog"})
+	@CsvSource({ "neil,neil-gaiman", "sizzlingsandwich,sizzlingsandwichperfection-blog",
+			"blockchain-official,blockchain-official" })
 	void test(String search, String blogName) {
 		webDriver.get(baseUrl);
-		//start search
+		// start search
 		webDriver.findElement(By.name("q")).sendKeys(search);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[1]/div[2]/span/div/div/div/div[2]/div[1]/div/a")));
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[1]/div[2]/span/div/div/div/div[2]/div[1]/div/a")).click();
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span")));
-		WebElement followButton = webDriver.findElement(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span"));
-		if(followButton.getText().equals("Follow")) {
+		// wait until the searched blog appears
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By
+				.xpath("/html/body/div/div/div[2]/div[1]/header/div[1]/div[2]/span/div/div/div/div[2]/div[1]/div/a")));
+		// click on the searched blog
+		webDriver
+				.findElement(By.xpath(
+						"/html/body/div/div/div[2]/div[1]/header/div[1]/div[2]/span/div/div/div/div[2]/div[1]/div/a"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(
+				"/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span")));
+		// find follow button
+		WebElement followButton = webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span"));
+		if (followButton.getText().equals("Follow")) {
 			followButton.click();
 		}
+		// check whether newly followed blog appears on followed page
 		webDriver.get("https://www.tumblr.com/following");
-		assertEquals(blogName, webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/section/div[1]/div[1]/div/a/div[1]/span")).getText()
-		);
+		List<WebElement> blogz;
+		blogz = webDriver.findElements(By.tagName("section"));
+		for(WebElement i : blogz) {
+			assertEquals(blogName, i.getText());
+		}
 		
+		/*assertEquals(blogName,
+				webDriver
+						.findElement(By.xpath(
+								"/html/body/div/div/div[2]/div[2]/div[1]/main/section/div[1]/div[1]/div/a/div[1]/span"))
+						.getText());*/
+
 	}
 
 }

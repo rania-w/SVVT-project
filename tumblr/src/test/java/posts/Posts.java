@@ -24,7 +24,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 class Posts {
 	public static WebDriver webDriver;
 	public static String baseUrl;
-	public static JavascriptExecutor js;
 	public static WebDriverWait wait;
 
 	@BeforeAll
@@ -36,7 +35,6 @@ class Posts {
 		options.addArguments("--user-data-dir=/home/rani");
 		webDriver = new ChromeDriver(options);
 		baseUrl = "https://tumblr.com/";
-		js = (JavascriptExecutor) webDriver;
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 	}
 
