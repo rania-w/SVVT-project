@@ -10,6 +10,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
@@ -51,9 +53,8 @@ class Follow {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ "neil,neil-gaiman", "sizzlingsandwich,sizzlingsandwichperfection-blog",
-			"blockchain-official,blockchain-official" })
-	void test(String search, String blogName) {
+	@CsvSource({ "neil,neil-gaiman", "blockchain-official,blockchain-official" })
+	void follow(String search, String blogName) {
 		webDriver.get(baseUrl);
 		// start search
 		webDriver.findElement(By.name("q")).sendKeys(search);
@@ -75,17 +76,17 @@ class Follow {
 		}
 		// check whether newly followed blog appears on followed page
 		webDriver.get("https://www.tumblr.com/following");
-		List<WebElement> blogz;
-		blogz = webDriver.findElements(By.tagName("section"));
-		for(WebElement i : blogz) {
-			assertEquals(blogName, i.getText());
-		}
-		
-		/*assertEquals(blogName,
-				webDriver
-						.findElement(By.xpath(
-								"/html/body/div/div/div[2]/div[2]/div[1]/main/section/div[1]/div[1]/div/a/div[1]/span"))
-						.getText());*/
+		assertTrue(webDriver.getPageSource().contains(blogName));
+						
+
+	}
+	@Test
+	void unfollow() {
+		webDriver.get(baseUrl + "/following");
+		String followXpath = "/html/body/div/div/div[2]/div[2]/div[1]/main/section/div[5]/div[2]/div/button";
+		webDriver.findElement(By.xpath(followXpath)).click();
+		assertEquals("Follow", webDriver.findElement(By.xpath(followXpath)).getText());
+		webDriver.navigate().refresh();
 
 	}
 

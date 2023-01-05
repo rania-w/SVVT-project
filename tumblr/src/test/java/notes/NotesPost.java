@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import org.openqa.selenium.By;
 class NotesPost {
 	public static WebDriver webDriver;
 	public static String baseUrl;
-	public static JavascriptExecutor js;
 	public static WebDriverWait wait;
 	public String postNumberBefore;
 	public String postNumberAfter;
@@ -41,11 +41,10 @@ class NotesPost {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--no-sandbox");
 		options.addArguments("--start-maximized");
-		options.addArguments("--user-data-dir=/home/rani");//nece da loada profil
+		options.addArguments("--user-data-dir=/home/rani");
 		webDriver = new ChromeDriver(options);
 		webDriver.manage().getCookies();
 		baseUrl = "https://tumblr.com/one-time-i-dreamt/";
-		js = (JavascriptExecutor) webDriver;
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 		
 	}
@@ -74,21 +73,18 @@ class NotesPost {
 		assertNotEquals(postNumberBefore, postNumberAfter);
 	}
 	
-	
-	/*
+	@Disabled
 	@Test
 	void reblogCustomURL() throws InterruptedException{
 		//shouldve passed, cant find xpath
 		//when reblog button clicked a class called RuIGO should show
 		//different ways
-		
-
 		webDriver.get("https://heritageposts.tumblr.com/post/623202863013822464/caluummhood-holy-shit-it-was-the-original-one");	
 		wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[3]/div/a[1]")));
 		webDriver.findElement(By.xpath("/html/body/div[2]/div[3]/div/a[1]")).click();
 		
-	}*/
+	}
 	
 	@Test
 	void reblogBlog() {
