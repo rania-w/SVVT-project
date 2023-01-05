@@ -8,7 +8,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,7 +34,7 @@ class PopUpLogin {
 		System.setProperty("webdriver.chrome.driver", "/home/rani/V Semester/SVVT/chromedriver_linux64/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--no-sandbox");
-		options.addArguments("--headless");
+		options.addArguments("--incognito");
 		options.addArguments("--start-maximized");
 		webDriver = new ChromeDriver(options);
 		baseUrl = "https://www.tumblr.com/";
@@ -52,28 +55,25 @@ class PopUpLogin {
 	@AfterEach
 	void tearDown() throws Exception {
 			}
-/*
- * mozda bolje da napravim random za broj pixela i zaviseci od broja...
- * */
-	@Test
-	void testFrog() throws InterruptedException{
-		js.executeScript("window.scrollBy(0, 2001)", "");
-		WebElement frog = wait.until(
-				ExpectedConditions.visibilityOfElementLocated(
-						By.xpath(frogXpath)));
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-
-	}
 	
-	@Test
-	void testNoFrog() {
-		js.executeScript("window.scrollBy(0, 2000)", "");
-		Boolean b = wait.until(
-				ExpectedConditions.not(
-						ExpectedConditions.visibilityOfElementLocated(
-								By.xpath(frogXpath))));
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-		assertTrue(b);
+	@ParameterizedTest
+	@ValueSource(ints = {2525, 1254, 6989, 100})
+	void testFrog(int number) throws InterruptedException{
+		js.executeScript("window.scrollBy(0, " + number + " )", "");
+		Boolean b=false;;
+		WebElement frog;
+		if(number > 2000) {
+			frog = wait.until(
+					ExpectedConditions.visibilityOfElementLocated(
+							By.xpath(frogXpath)));
+		} else if (number <= 2000) {
+			/*finish this shit*/
+			b = wait.until(
+					ExpectedConditions.not(
+							ExpectedConditions.visibilityOfElementLocated(
+									By.xpath(frogXpath))));
+			assertTrue(b);
+		}
 	}
 
 }
