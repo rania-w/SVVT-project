@@ -63,7 +63,7 @@ class CustomizeBlog {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")).click();
 		webDriver.findElement(By.className("c1JQY")).clear();
-		String newName = "sad qa";
+		String newName = "qa";
 		webDriver.findElement(By.className("c1JQY")).sendKeys(newName);
 		
 		//save
@@ -79,7 +79,7 @@ class CustomizeBlog {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")).click();
 		webDriver.findElement(By.className("BL18W")).clear();
-		String newDesc = "im not a bot i promise im testing this hellsite for a school project";
+		String newDesc = "im not a bot im testing this for a school project";
 		webDriver.findElement(By.className("BL18W")).sendKeys(newDesc);
 		
 		//save
