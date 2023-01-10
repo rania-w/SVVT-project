@@ -1,14 +1,15 @@
 package tumblr;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.Duration;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,6 +18,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class Login {
 	public static WebDriver webDriver;
 	public static String baseUrl;
@@ -53,6 +55,7 @@ class Login {
 	}
 
 	@Test
+	@Order(3)
 	void login() throws InterruptedException {
 		WebElement toPass = webDriver
 				.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div[2]/div/form/div[1]/div[1]/button"));
@@ -76,8 +79,8 @@ class Login {
 		assertEquals("https://www.tumblr.com/dashboard", currUrl);
 	}
 
-	
 	@Test
+	@Order(1)
 	void loginNoAcc() {
 		WebElement toPass = webDriver
 				.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div[2]/div/form/div[1]/div[1]/button"));
@@ -88,6 +91,7 @@ class Login {
 	}
 
 	@Test
+	@Order(2)
 	void loginBadMail() {
 		WebElement toPass = webDriver
 				.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div[2]/div/form/div[1]/div[1]/button"));

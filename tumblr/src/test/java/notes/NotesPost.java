@@ -21,11 +21,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
+
 /*
- * tests which should pass have passed, which should fail had failed
- * i should change these xpaths to class names, could possibly make life easier and better
+ * rewrite this
  * */
-@TestMethodOrder(OrderAnnotation.class)
 class NotesPost {
 	public static WebDriver webDriver;
 	public static String baseUrl;
@@ -73,13 +72,11 @@ class NotesPost {
 		assertNotEquals(postNumberBefore, postNumberAfter);
 	}
 	
-	@Disabled
+	
 	@Test
 	void reblogCustomURL() throws InterruptedException{
-		//shouldve passed, cant find xpath
-		//when reblog button clicked a class called RuIGO should show
-		//different ways
 		webDriver.get("https://heritageposts.tumblr.com/post/623202863013822464/caluummhood-holy-shit-it-was-the-original-one");	
+		Thread.sleep(5000);
 		wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[3]/div/a[1]")));
 		webDriver.findElement(By.xpath("/html/body/div[2]/div[3]/div/a[1]")).click();
@@ -93,7 +90,6 @@ class NotesPost {
 		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button")).click();
 		
 	}
-	
 	
 	@Test
 	void like() throws InterruptedException{

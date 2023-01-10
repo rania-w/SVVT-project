@@ -45,9 +45,7 @@ class Posts {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		webDriver.get(baseUrl);
-		//button for creating posts
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/a")).click();
+
 	}
 
 	@AfterEach
@@ -56,54 +54,44 @@ class Posts {
 
 	@Test
 	void postText() throws InterruptedException {
-		String title = "what a wild title whoooooooooo";
-		String bold = "omg bold uuuu";
-		String italic = "italic wheeee";
-		String tags = "this is so fun";
+		webDriver.get(baseUrl);
+		// button for creating posts
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/a")).click();
+		String title = "A title";
+		String bold = "This text is bold";
+		String italic = "This text should be italic";
+		String tags = "absolutely anything can go in a tag";
 		Actions builder = new Actions(webDriver);
-		
-		//waiting for popup menu
+
+		// waiting for popup menu
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("HT4SV")));
-		//creating text post
+		// creating text post
 		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div[1]/div/a")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("RuIGO")));
 		Thread.sleep(2000);
-		
-		//typing the title and text post
-		Action type = builder
-				.sendKeys(Keys.ARROW_UP)
-				.sendKeys(title)
-				.sendKeys(Keys.ARROW_DOWN)
-				.keyDown(Keys.CONTROL)
-				.sendKeys("b")
-				.keyUp(Keys.CONTROL)
-				.sendKeys(bold)
-				.keyDown(Keys.CONTROL)
-				.sendKeys("b")
-				.keyUp(Keys.CONTROL)
-				.sendKeys(Keys.SPACE)
-				.keyDown(Keys.CONTROL)
-				.sendKeys("i")
-				.keyUp(Keys.CONTROL)
-				.sendKeys(italic)
-				.build();
+
+		// typing the title and text post
+		Action type = builder.sendKeys(Keys.ARROW_UP).sendKeys(title).sendKeys(Keys.ARROW_DOWN).keyDown(Keys.CONTROL)
+				.sendKeys("b").keyUp(Keys.CONTROL).sendKeys(bold).keyDown(Keys.CONTROL).sendKeys("b")
+				.keyUp(Keys.CONTROL).sendKeys(Keys.SPACE).keyDown(Keys.CONTROL).sendKeys("i").keyUp(Keys.CONTROL)
+				.sendKeys(italic).build();
 		type.perform();
-		
-		//add tags
+
+		// add tags
 		webDriver.findElement(By.className("mbROR")).sendKeys(tags);
-		//post the text post
-		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button/span")).click();		
-		
-		//checking whether the post can be found on the blog
+		// post the text post
+		webDriver.findElement(By
+				.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button/span"))
+				.click();
+
+		// checking whether the post can be found on the blog, and if all the text is
+		// edited how it should be
 		webDriver.get("https://www.tumblr.com/reallycoolblogsblog");
-		assertEquals(title, 
-				webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div/div[1]/h1")).getText()
-		);
-		assertEquals(bold, 
-				webDriver.findElement(By.tagName("strong")).getText()
-				);
-		assertEquals(italic, webDriver.findElement(By.tagName("em")).getText()
-				);
+		assertEquals(title, webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div/div[1]/h1"))
+				.getText());
+		assertEquals(bold, webDriver.findElement(By.tagName("strong")).getText());
+		assertEquals(italic, webDriver.findElement(By.tagName("em")).getText());
 	}
 
 }

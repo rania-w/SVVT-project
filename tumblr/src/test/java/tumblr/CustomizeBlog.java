@@ -45,6 +45,7 @@ class CustomizeBlog {
 		webDriver.quit();
 	}
 
+	//clicking the menu button which is needed for every test
 	@BeforeEach
 	void setUp() throws Exception {
 		webDriver.get(baseUrl);
@@ -72,7 +73,6 @@ class CustomizeBlog {
 		assertEquals(blogTitle, newName);
 	}
 	
-	//should fail???????
 	@Test
 	void testDescription() {
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")).click();

@@ -52,6 +52,10 @@ class Follow {
 	void tearDown() throws Exception {
 	}
 
+	/*
+	 * mozda napisat test koji gleda u element i na osnovu relative locatora da
+	 * nadje pise li follow sa strane
+	 */
 	@ParameterizedTest
 	@CsvSource({ "neil,neil-gaiman", "blockchain-official,blockchain-official" })
 	void follow(String search, String blogName) {
@@ -77,9 +81,9 @@ class Follow {
 		// check whether newly followed blog appears on followed page
 		webDriver.get("https://www.tumblr.com/following");
 		assertTrue(webDriver.getPageSource().contains(blogName));
-						
 
 	}
+
 	@Test
 	void unfollow() {
 		webDriver.get(baseUrl + "/following");

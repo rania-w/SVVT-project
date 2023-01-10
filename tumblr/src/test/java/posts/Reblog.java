@@ -32,7 +32,7 @@ class Reblog {
 		options.addArguments("--start-maximized");
 		options.addArguments("--user-data-dir=/home/rani");
 		webDriver = new ChromeDriver(options);
-		baseUrl = "https://www.tumblr.com/reblog/one-time-i-dreamt/705063213940801536/2EbpUxdF";
+		baseUrl = "https://www.tumblr.com/blog/one-time-i-dreamt";
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 	}
 
@@ -49,11 +49,14 @@ class Reblog {
 	void tearDown() throws Exception {
 	}
 
+	/*
+	 * rewrite
+	 * */
 	@Test
-	void test() throws InterruptedException {
-		
+	void reblogWithContent() throws InterruptedException {
 		webDriver.get(baseUrl);
-		String reblogText = "I'm adding a nice lil' reblog";
+		Thread.sleep(20000);
+		String reblogText = "I'm adding a reblog";
 		//getting the text of the original post
 		String theText =
 		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[1]/div[2]/div/div/div[2]/div/div/p")).getText();
@@ -65,7 +68,7 @@ class Reblog {
 				.build();
 		addReblog.perform();
 		//reblog the post
-		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button/span")).click();
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[3]/footer/div[1]/div[2]/div[3]/span/span/span/span/a")).click();
 		//check whether the post is on user's blog
 		webDriver.get("https://tumblr.com/reallycoolblogsblog");
 		//checking original post
