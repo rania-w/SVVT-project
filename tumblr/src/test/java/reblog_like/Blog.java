@@ -2,18 +2,11 @@ package reblog_like;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
-
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,9 +15,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 
-/*
- * rewrite this
- * */
 class Blog {
 	public static WebDriver webDriver;
 	public static String baseUrl;
@@ -53,76 +43,70 @@ class Blog {
 		webDriver.quit();
 	}
 
-	/*
-	 * @BeforeEach void setUp() throws Exception { webDriver.get(baseUrl); // click
-	 * on menu that shows number of posts and likes webDriver.findElement(By.xpath(
-	 * "/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"))
-	 * .click(); // the number of posts postNumberBefore =
-	 * webDriver.findElement(By.xpath(
-	 * "/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]"
-	 * )) .getText(); }
-	 * 
-	 * @AfterEach void tearDown() throws Exception { webDriver.get(baseUrl); //
-	 * click on menu that shows number of posts and likes
-	 * webDriver.findElement(By.xpath(
-	 * "/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"))
-	 * .click(); // the number of posts postNumberAfter =
-	 * webDriver.findElement(By.xpath(
-	 * "/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]"
-	 * )) .getText(); assertNotEquals(postNumberBefore, postNumberAfter);
-	 * assertNotEquals(likeNumberBefore, likeNumberAfter); }
-	 */
-	@Test
-	@Disabled
-	void reblogBlog() {
-		webDriver.get("https://www.tumblr.com/doggosource/704577297320165376/doggosource-a-n-g-e-l");
-		webDriver.findElement(By.xpath(
-				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[3]/span/span/span/span/a"))
-				.click();
-	}
-
-	@Test
-	@Disabled
-	void likeBlog() throws InterruptedException {
-		webDriver.get("https://www.tumblr.com/doggosource/704577297320165376/doggosource-a-n-g-e-l");
-		webDriver.findElement(By.xpath(
-				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[4]/span/span/span/span/button"))
-				.click();
-
-	}
-
-	/*
-	 * IT WORKS
-	 * make it prty
-	 * */
-	@Test
-	void general() throws InterruptedException{
+	@BeforeEach
+	void setUp() throws Exception {
 		webDriver.get(baseUrl);
+
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+	}
+
+	@Test
+	void reblogBlog() {
 		// click on menu that shows number of posts and likes
-		WebElement menuButton = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"));
+		WebElement menuButton = webDriver
+				.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"));
 		menuButton.click();
 		// the number of posts
 		WebElement postNumber = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
 				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
-		
 		postNumberBefore = postNumber.getText();
 		System.out.println(postNumberBefore);
-		likeNumberBefore = webDriver.findElement(By.xpath(
-				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[1]/a/div[2]/span[2]"))
-				.getText();
+
+		// click reblog button
+		// promijeni button
+		webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[3]/span/span/span/span/a"))
+				.click();
+		// waiting until the reblog modal shows
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("RuIGO")));
+
+		// confirm simple reblog
+		webDriver
+				.findElement(By.xpath(
+						"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOf(menuButton));
+		menuButton.click();
+		WebElement postNumberA = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
+		postNumberAfter = postNumberA.getText();
+		System.out.println(postNumberAfter);
+		assertNotSame(postNumberBefore, postNumberAfter);
+	}
+
+	@Test
+	void likeBlog() throws InterruptedException {
+		// click on menu that shows number of posts and likes
+		WebElement menuButton = webDriver
+				.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"));
+		menuButton.click();
+		// the number of posts
+		WebElement likeNumber = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
+
+		likeNumberBefore = likeNumber.getText();
 		System.out.println(likeNumberBefore);
-		
-		//click like button
+
+		// click like button
 		webDriver.findElement(By.xpath(
 				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[4]/span/span/span/span/button"))
 				.click();
-		Thread.sleep(8000);
 		menuButton.click();
-		likeNumberAfter = webDriver.findElement(By.xpath(
-				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[1]/a/div[2]/span[2]"))
-				.getText();
+		likeNumberAfter = likeNumber.getText();
 		assertNotSame(likeNumberBefore, likeNumberAfter);
-		
 	}
 
 }
