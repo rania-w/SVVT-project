@@ -1,4 +1,4 @@
-package reblog_like;
+package notes;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +30,6 @@ class CustomURL {
 		options.addArguments("--start-maximized");
 		options.addArguments("--user-data-dir=/home/rani");
 		webDriver = new ChromeDriver(options);
-		webDriver.manage().getCookies();
 		baseUrl = "https://doggosource.tumblr.com/post/704577297320165376/doggosource-a-n-g-e-l";
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 

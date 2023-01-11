@@ -1,4 +1,4 @@
-package tumblr;
+package logged_out;
 
 import static org.junit.jupiter.api.Assertions.*;
 

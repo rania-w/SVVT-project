@@ -95,7 +95,7 @@ class Login {
 	void loginBadMail() {
 		WebElement toPass = webDriver
 				.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div[2]/div/form/div[1]/div[1]/button"));
-		webDriver.findElement(By.name("email")).sendKeys("this is not an email, obviously");
+		webDriver.findElement(By.name("email")).sendKeys("this is not an email");
 		toPass.click();
 		// error claiming the entered value is not a valid email
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]")));

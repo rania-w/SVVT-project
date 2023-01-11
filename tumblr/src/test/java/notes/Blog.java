@@ -1,4 +1,4 @@
-package reblog_like;
+package notes;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
