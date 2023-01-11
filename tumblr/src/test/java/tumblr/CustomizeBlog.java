@@ -3,18 +3,14 @@ package tumblr;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Duration;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -49,7 +45,7 @@ class CustomizeBlog {
 	@BeforeEach
 	void setUp() throws Exception {
 		webDriver.get(baseUrl);
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
+		
 	}
 
 	@AfterEach
@@ -58,6 +54,7 @@ class CustomizeBlog {
 
 	@Test
 	void testTitle() {
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")));
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
@@ -75,6 +72,7 @@ class CustomizeBlog {
 	
 	@Test
 	void testDescription() {
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
 		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")).click();
@@ -93,7 +91,9 @@ class CustomizeBlog {
 	@ParameterizedTest
 	@CsvSource({"True Blue,palette--trueBlue", "Dark Mode,palette--darkMode", "Low-Contrast Classic,palette--lowContrastClassic", "Cement,palette--cement", "Cybernetic,palette--cybernetic", "Canary,palette--canary", "Ghost,palette--ghost", "Vampire,palette--vampire", "Pumpkin,palette--pumpkin", "Snow Bright,palette--snowBright", "Goth Rave,palette--gothRave", "Pride,palette--pride"})
 	void palette(String given, String expected) throws InterruptedException {
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
 		WebElement paletteButton = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button"));
+		//has to be clicked at least once in order to see current palette
 		paletteButton.click();
 		WebElement body = webDriver.findElement(By.xpath("/html/body"));
 		String s = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span")).getText();
@@ -102,7 +102,7 @@ class CustomizeBlog {
 			paletteButton.click();
 			s = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span")).getText();
 			i++;
-			wait.wait(1500);
+			Thread.sleep(2500);
 		}
 		assertEquals(expected, body.getAttribute("class"));
 		

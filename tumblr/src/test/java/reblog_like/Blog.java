@@ -19,11 +19,7 @@ class Blog {
 	public static WebDriver webDriver;
 	public static String baseUrl;
 	public static WebDriverWait wait;
-	public String postNumberBefore;
-	public String postNumberAfter;
-	public String likeNumberBefore;
-	public String likeNumberAfter;
-
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		System.setProperty("webdriver.chrome.driver", "/home/rani/V Semester/SVVT/chromedriver_linux64/chromedriver");
@@ -35,7 +31,6 @@ class Blog {
 		webDriver.manage().getCookies();
 		baseUrl = "https://www.tumblr.com/doggosource/704577297320165376/doggosource-a-n-g-e-l";
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-
 	}
 
 	@AfterAll
@@ -55,6 +50,8 @@ class Blog {
 
 	@Test
 	void reblogBlog() {
+		String postNumberBefore;
+		String postNumberAfter;
 		// click on menu that shows number of posts and likes
 		WebElement menuButton = webDriver
 				.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"));
@@ -63,10 +60,8 @@ class Blog {
 		WebElement postNumber = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
 				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
 		postNumberBefore = postNumber.getText();
-		System.out.println(postNumberBefore);
 
 		// click reblog button
-		// promijeni button
 		webDriver.findElement(By.xpath(
 				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[3]/span/span/span/span/a"))
 				.click();
@@ -78,32 +73,33 @@ class Blog {
 				.findElement(By.xpath(
 						"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button"))
 				.click();
+		//check the menu for number of posts after reblog
 		wait.until(ExpectedConditions.visibilityOf(menuButton));
 		menuButton.click();
 		WebElement postNumberA = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
 				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
 		postNumberAfter = postNumberA.getText();
-		System.out.println(postNumberAfter);
 		assertNotSame(postNumberBefore, postNumberAfter);
 	}
 
 	@Test
 	void likeBlog() throws InterruptedException {
+		String likeNumberBefore;
+		String likeNumberAfter;
 		// click on menu that shows number of posts and likes
 		WebElement menuButton = webDriver
 				.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"));
 		menuButton.click();
-		// the number of posts
+		// getting the number of likes
 		WebElement likeNumber = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
 				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[1]/a/span[2]")));
-
 		likeNumberBefore = likeNumber.getText();
-		System.out.println(likeNumberBefore);
 
 		// click like button
 		webDriver.findElement(By.xpath(
 				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div/div/div/article/div[2]/footer/div[1]/div[2]/div[4]/span/span/span/span/button"))
 				.click();
+		//check the number of likes after liking post
 		menuButton.click();
 		likeNumberAfter = likeNumber.getText();
 		assertNotSame(likeNumberBefore, likeNumberAfter);

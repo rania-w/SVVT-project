@@ -10,18 +10,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 class Reblog {
 	public static WebDriver webDriver;
-	public static String baseUrl;
+	public static String firstBlog;
+	public static String secondBlog;
 	public static WebDriverWait wait;
 
 	@BeforeAll
@@ -32,7 +30,8 @@ class Reblog {
 		options.addArguments("--start-maximized");
 		options.addArguments("--user-data-dir=/home/rani");
 		webDriver = new ChromeDriver(options);
-		baseUrl = "https://www.tumblr.com/blog/one-time-i-dreamt";
+		firstBlog = "https://www.tumblr.com/one-time-i-dreamt";
+		secondBlog = "https://www.tumblr.com/reallycoolblogsblog";
 		wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
 	}
 
@@ -49,36 +48,48 @@ class Reblog {
 	void tearDown() throws Exception {
 	}
 
-	/*
-	 * rewrite
-	 * */
 	@Test
 	void reblogWithContent() throws InterruptedException {
-		webDriver.get(baseUrl);
-		Thread.sleep(20000);
+		webDriver.get(firstBlog);
 		String reblogText = "I'm adding a reblog";
-		//getting the text of the original post
-		String theText =
-		webDriver.findElement(By.xpath("/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[1]/div[2]/div/div/div[2]/div/div/p")).getText();
-		//reblog
-		Actions builder = new Actions(webDriver);
-		//add some text to reblog
-		Action addReblog = builder
-				.sendKeys(reblogText)
-				.build();
-		addReblog.perform();
-		//reblog the post
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[3]/footer/div[1]/div[2]/div[3]/span/span/span/span/a")).click();
-		//check whether the post is on user's blog
-		webDriver.get("https://tumblr.com/reallycoolblogsblog");
-		//checking original post
-		assertEquals(theText, 
-				webDriver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div[1]/div[2]/div/div/p")).getText()
-		);
-		//checking added text
-		assertEquals(reblogText,
-				webDriver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div[2]/div[2]/div/div/p")).getText()
-				);
+		String tagText = "Gotta add a tag";
+		// find reblog button and click on it
+		webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[3]/footer/div[1]/div[2]/div[3]/span/span/span/span/a"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("RuIGO")));
+
+		// get original text
+		String originalText = webDriver.findElement(By.xpath(
+				"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[1]/div[2]/div/div/div[2]/div/div/p"))
+				.getText();
+		// add text and tags
+		webDriver.findElement(By.xpath(
+				"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[1]/div[3]/div/div[5]/div/div/div[1]/p"))
+				.sendKeys(reblogText);
+		webDriver
+				.findElement(By.xpath(
+						"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[2]/div/span/span/textarea"))
+				.sendKeys(tagText);
+
+		// confirm reblog
+		webDriver
+				.findElement(By.xpath(
+						"/html/body/div[1]/div/div[4]/div/div/div/div/div[2]/div[2]/div/div[3]/div/div/div/button"))
+				.click();
+
+		// check on user's blog if the post was reblogged properly
+		webDriver.get(secondBlog);
+		Thread.sleep(3000);
+		assertEquals(originalText, webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div[1]/div[2]/div/div/p"))
+				.getText());
+		assertEquals(reblogText, webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[1]/div/span/div[2]/div[2]/div/div/p"))
+				.getText());
+		assertEquals("#".concat(tagText), webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[2]/div/div/div[1]/main/div/div/div/div[2]/div[1]/div/div/article/div[2]/div/div/a"))
+				.getText());
 	}
 
 }
