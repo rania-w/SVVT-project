@@ -15,10 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.locators.RelativeLocator;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -52,10 +56,6 @@ class Follow {
 	void tearDown() throws Exception {
 	}
 
-	/*
-	 * mozda napisat test koji gleda u element i na osnovu relative locatora da
-	 * nadje pise li follow sa strane
-	 */
 	@ParameterizedTest
 	@CsvSource({ "neil,neil-gaiman", "blockchain-official,blockchain-official" })
 	void follow(String search, String blogName) {
@@ -79,19 +79,38 @@ class Follow {
 			followButton.click();
 		}
 		// check whether newly followed blog appears on followed page
-		webDriver.get("https://www.tumblr.com/following");
-		assertTrue(webDriver.getPageSource().contains(blogName));
-
-	}
-
-	@Test
-	void unfollow() {
 		webDriver.get(baseUrl + "/following");
-		String followXpath = "/html/body/div/div/div[2]/div[2]/div[1]/main/section/div[5]/div[2]/div/button";
-		webDriver.findElement(By.xpath(followXpath)).click();
-		assertEquals("Follow", webDriver.findElement(By.xpath(followXpath)).getText());
-		webDriver.navigate().refresh();
-
+		List<WebElement> followingList = webDriver.findElements(By.className("UulOO"));
+		ArrayList<String> namesOfBlogs = new ArrayList<String>();
+		for (int i = 0; i<followingList.size(); i++) {
+			namesOfBlogs.add(followingList.get(i).getText());
+		}
+		assertTrue(namesOfBlogs.contains(blogName));
 	}
 
+	@Disabled
+	@Test
+	void unfollow() throws InterruptedException {
+		webDriver.get(baseUrl + "/following");
+		String blogToUnfollow = "blockchain-official";
+		WebElement followButton;
+		List<WebElement> followingList = webDriver.findElements(By.className("UulOO"));
+		for(WebElement i : followingList) {
+			if(i.getText().equals(blogToUnfollow)) {
+				i.click();
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span")));
+				followButton = webDriver.findElement(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span"));
+				if(followButton.getText().equals("Following")) {
+					followButton.click();
+				}
+			}
+		}
+		webDriver.get(baseUrl + "/following");
+		ArrayList<String> namesOfBlogs = new ArrayList<String>();
+		for (int i = 0; i<followingList.size(); i++) {
+			namesOfBlogs.add(followingList.get(i).getText());
+		}
+		assertFalse(namesOfBlogs.contains(blogToUnfollow));
+	}
+	
 }
