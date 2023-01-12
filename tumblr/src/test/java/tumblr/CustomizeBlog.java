@@ -41,11 +41,10 @@ class CustomizeBlog {
 		webDriver.quit();
 	}
 
-	//clicking the menu button which is needed for every test
 	@BeforeEach
 	void setUp() throws Exception {
 		webDriver.get(baseUrl);
-		
+
 	}
 
 	@AfterEach
@@ -54,59 +53,88 @@ class CustomizeBlog {
 
 	@Test
 	void testTitle() {
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")));
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")).click();
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")));
+		webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button"))
+				.click();
 		webDriver.findElement(By.className("c1JQY")).clear();
 		String newName = "qa";
 		webDriver.findElement(By.className("c1JQY")).sendKeys(newName);
-		
-		//save
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/div[1]/button[2]")).click();
+
+		// save
+		webDriver
+				.findElement(
+						By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/div[1]/button[2]"))
+				.click();
 		webDriver.get("https://tumblr.com/reallycoolblogsblog");
-		String blogTitle = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/header/div/div/h1")).getText();
+		String blogTitle = webDriver
+				.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/header/div/div/h1")).getText();
 		assertEquals(blogTitle, newName);
 	}
-	
+
 	@Test
 	void testDescription() {
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")).click();
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"))
+				.click();
+		webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[2]/div/li/div/ul/li[8]/a"))
+				.click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button")));
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/button"))
+				.click();
 		webDriver.findElement(By.className("BL18W")).clear();
 		String newDesc = "im not a bot im testing this for a school project";
 		webDriver.findElement(By.className("BL18W")).sendKeys(newDesc);
-		
-		//save
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/div[1]/button[2]")).click();
+
+		// save
+		webDriver
+				.findElement(
+						By.xpath("/html/body/div/div/div[2]/div[2]/div[1]/main/div/div[1]/div[2]/div[1]/button[2]"))
+				.click();
 		webDriver.get("https://tumblr.com/reallycoolblogsblog");
-		String blogDesc = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[1]/div/div")).getText();
+		String blogDesc = webDriver
+				.findElement(By.xpath("/html/body/div/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[1]/div/div"))
+				.getText();
 		assertEquals(blogDesc, newDesc);
-		
-		
+
 	}
+
 	@ParameterizedTest
-	@CsvSource({"True Blue,palette--trueBlue", "Dark Mode,palette--darkMode", "Low-Contrast Classic,palette--lowContrastClassic", "Cement,palette--cement", "Cybernetic,palette--cybernetic", "Canary,palette--canary", "Ghost,palette--ghost", "Vampire,palette--vampire", "Pumpkin,palette--pumpkin", "Snow Bright,palette--snowBright", "Goth Rave,palette--gothRave", "Pride,palette--pride"})
+	@CsvSource({ "True Blue,palette--trueBlue", "Dark Mode,palette--darkMode",
+			"Low-Contrast Classic,palette--lowContrastClassic", "Cement,palette--cement",
+			"Cybernetic,palette--cybernetic", "Canary,palette--canary", "Ghost,palette--ghost",
+			"Vampire,palette--vampire", "Pumpkin,palette--pumpkin", "Snow Bright,palette--snowBright",
+			"Goth Rave,palette--gothRave", "Pride,palette--pride" })
 	void palette(String given, String expected) throws InterruptedException {
-		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button")).click();
-		WebElement paletteButton = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button"));
-		//has to be clicked at least once in order to see current palette
+		webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/span/button"))
+				.click();
+		WebElement paletteButton = webDriver.findElement(
+				By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button"));
+		// has to be clicked at least once in order to see current palette
 		paletteButton.click();
 		WebElement body = webDriver.findElement(By.xpath("/html/body"));
-		String s = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span")).getText();
-		int i=0;
-		while(!s.equals(given) && i<12) {
+		String s = webDriver.findElement(By.xpath(
+				"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span"))
+				.getText();
+		int i = 0;
+		while (!s.equals(given) && i < 12) {
 			paletteButton.click();
-			s = webDriver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span")).getText();
+			s = webDriver.findElement(By.xpath(
+					"/html/body/div/div/div[2]/div[1]/header/div[2]/div[7]/span/div/div/div/ul[1]/li[9]/button/span/div[2]/span[1]/span"))
+					.getText();
 			i++;
 			Thread.sleep(2500);
 		}
 		assertEquals(expected, body.getAttribute("class"));
-		
-		
+
 	}
 
 }

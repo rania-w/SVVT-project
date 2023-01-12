@@ -82,35 +82,36 @@ class Follow {
 		webDriver.get(baseUrl + "/following");
 		List<WebElement> followingList = webDriver.findElements(By.className("UulOO"));
 		ArrayList<String> namesOfBlogs = new ArrayList<String>();
-		for (int i = 0; i<followingList.size(); i++) {
+		for (int i = 0; i < followingList.size(); i++) {
 			namesOfBlogs.add(followingList.get(i).getText());
 		}
 		assertTrue(namesOfBlogs.contains(blogName));
 	}
 
-	@Disabled
 	@Test
 	void unfollow() throws InterruptedException {
 		webDriver.get(baseUrl + "/following");
 		String blogToUnfollow = "blockchain-official";
 		WebElement followButton;
 		List<WebElement> followingList = webDriver.findElements(By.className("UulOO"));
-		for(WebElement i : followingList) {
-			if(i.getText().equals(blogToUnfollow)) {
+		for (WebElement i : followingList) {
+			if (i.getText().equals(blogToUnfollow)) {
 				i.click();
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span")));
-				followButton = webDriver.findElement(By.xpath("/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span"));
-				if(followButton.getText().equals("Following")) {
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+						"/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span")));
+				followButton = webDriver.findElement(By.xpath(
+						"/html/body/div/div/div[4]/div/div[2]/div[2]/div/div/div[1]/header/div/div/div[2]/button[2]/span"));
+				if (followButton.getText().equals("Following")) {
 					followButton.click();
 				}
 			}
 		}
 		webDriver.get(baseUrl + "/following");
 		ArrayList<String> namesOfBlogs = new ArrayList<String>();
-		for (int i = 0; i<followingList.size(); i++) {
+		for (int i = 0; i < followingList.size(); i++) {
 			namesOfBlogs.add(followingList.get(i).getText());
 		}
 		assertFalse(namesOfBlogs.contains(blogToUnfollow));
 	}
-	
+
 }
